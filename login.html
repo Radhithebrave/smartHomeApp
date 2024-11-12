@@ -1,0 +1,15 @@
+<div class="login-container">
+    <h2>Login</h2>
+    <form>
+        <div class="input-group">
+            <label>Username:</label>
+            <input type="text" ng-model="user.username">
+        </div>
+        <div class="input-group">
+            <label>Password:</label>
+            <input type="password" ng-model="user.password">
+        </div>
+        <button type="button" ng-click="login()">Login</button>
+    </form>
+    <p>{{message}}</p>
+</div>

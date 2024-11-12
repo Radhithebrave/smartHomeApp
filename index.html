@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html ng-app="smartHomeApp">
+<head>
+    <title>Smart Home Interface</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div ng-view></div> <!-- Container for displaying different views -->
+    
+    <!-- AngularJS Application Script -->
+    <script src="app.js"></script>
+    <script>
+        // Register the service worker when the app is initialized
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/smartHomeApp/service-worker.js')
+                .then((registration) => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                })
+                .catch((error) => {
+                    console.error('Service Worker registration failed:', error);
+                });
+            });
+        }
+
+        // WebSocket example (ensure you handle the actual URL correctly)
+        try {
+            const socket = new WebSocket('ws://127.0.0.1:5500/smartHomeApp/index.html/ws');
+            socket.onmessage = (event) => console.log('Message from server: ', event.data);
+        } catch (error) {
+            console.error('WebSocket error:', error);
+        }
+    </script>
+</body>
+</html>

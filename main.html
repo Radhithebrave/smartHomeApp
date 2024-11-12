@@ -1,0 +1,33 @@
+<div class="main-container">
+    <h2>Smart Home Control Panel</h2>
+    <div class="rooms">
+        <!-- Room Buttons -->
+        <button ng-click="toggleLights('kitchen')">Kitchen Lights: {{rooms.kitchen.lights ? 'On' : 'Off'}}</button>
+        <button ng-click="toggleLights('livingRoom')">Living Room Lights: {{rooms.livingRoom.lights ? 'On' : 'Off'}}</button>
+        <button ng-click="toggleLights('studyRoom')">Study Room Lights: {{rooms.studyRoom.lights ? 'On' : 'Off'}}</button>
+        <button ng-click="toggleLights('bedRoom')">Bedroom Lights: {{rooms.bedRoom.lights ? 'On' : 'Off'}}</button>
+    </div>
+
+    <div class="temperature-controls">
+        <h3>Adjust Room Temperature</h3>
+        <!-- Room Temperature Controls -->
+        <div ng-repeat="(room, details) in rooms">
+            <p>{{ room | uppercase }} Temperature: {{ details.temperature }}°C</p>
+            <button ng-click="updateTemperature(room, 1)">Increase</button>
+            <button ng-click="updateTemperature(room, -1)">Decrease</button>
+        </div>
+    </div>
+
+    <!-- Overall Settings -->
+    <div class="overall-settings">
+        <h3>Overall Settings</h3>
+        <label>Temperature: <input type="number" ng-model="overall.temperature"></label>
+        <label>Lights: 
+            <select ng-model="overall.lights">
+                <option value="true">On</option>
+                <option value="false">Off</option>
+            </select>
+        </label>
+        <button ng-click="applyOverallSettings()">Apply to All Rooms</button>
+    </div>
+</div>

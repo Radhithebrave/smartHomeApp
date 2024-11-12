@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Home Actions</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 60%;
+            margin: 20px auto;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Recorded Smart Home Actions</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody id="data-table">
+            <!-- Key-Value pairs will be displayed here -->
+        </tbody>
+    </table>
+
+    <!-- Script to read and display data from IndexedDB -->
+    <script>
+        // Function to open the IndexedDB
+        function openDatabase() {
+            return new Promise((resolve, reject) => {
+                let request = indexedDB.open('smartHomeDB', 1);
+                
+                request.onsuccess = function(event) {
+                    resolve(event.target.result);
+                };
+
+                request.onerror = function(event) {
+                    reject('Database error: ' + event.target.errorCode);
+                };
+            });
+        }
+
+        // Function to read and display data
+        function displayData() {
+            openDatabase().then(db => {
+                let transaction = db.transaction(['settings'], 'readonly');
+                let objectStore = transaction.objectStore('settings');
+                let request = objectStore.getAll();
+
+                request.onsuccess = function(event) {
+                    let entries = event.target.result;
+                    let tableBody = document.getElementById('data-table');
+                    tableBody.innerHTML = '';
+
+                    entries.forEach(entry => {
+                        let row = document.createElement('tr');
+                        let keyCell = document.createElement('td');
+                        keyCell.textContent = entry.key;
+
+                        let valueCell = document.createElement('td');
+                        valueCell.textContent = entry.value;
+
+                        row.appendChild(keyCell);
+                        row.appendChild(valueCell);
+                        tableBody.appendChild(row);
+                    });
+                };
+
+                request.onerror = function(event) {
+                    console.error('Read error:', event.target.errorCode);
+                };
+            });
+        }
+
+        // Display data on page load
+        window.onload = displayData;
+    </script>
+</body>
+</html>
